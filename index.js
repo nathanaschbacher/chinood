@@ -1,0 +1,62 @@
+// (The MIT License)
+
+// Copyright (c) 2012 Coradine Aviation Systems
+// Copyright (c) 2012 Nathan Aschbacher
+
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// 'Software'), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+
+// THE SOFTWARE IS PROVIDED 'AS IS', WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+// CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+// TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+// SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+var fs = require('fs');
+
+var Chinood = function Chinood(models_array, client) {
+    models_array = models_array instanceof Array ? models_array : [models_array];
+
+    this.client = client;
+    this.models = {};
+    
+    for(var i = 0, length = models_array.length; i < length; i++) {
+        this.registerModel(models_array[i]);
+    }
+};
+
+Chinood.BaseModel = require('./lib/base_model.js');
+
+Chinood.init = function(models_root, client) {
+    models_root = models_root.charAt(models_root.length-1) == '/' ? models_root : models_root + '/';
+        
+    var files = fs.readdirSync(models_root);
+    var models = [Chinood.BaseModel];
+
+    for(var i = 0, length = files.length; i < length; i++) {
+        files[i] = models_root+files[i];
+        models.push(require(files[i]));
+    }
+
+    return new Chinood(models, client);
+};
+
+Chinood.prototype.registerModel = function(model) {
+    var client = this.client;
+    //this.models[model.name] = model.bind(this);
+    this.models[model.name] = function(init_data, check_constraints) {
+        return new model(init_data, check_constraints, client);
+    };
+};
+
+module.exports = Chinood;
