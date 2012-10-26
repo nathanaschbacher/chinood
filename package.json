@@ -1,0 +1,40 @@
+{
+    "name": "chinood",
+    "version": "0.0.1",
+    "description": "Object Data Mapper for Riak built on nodiak (https://npmjs.org/package/nodiak).",
+    "author": "Nathan Aschbacher <nathan@coradine.com>",
+    "contributors": [ 
+        { "name": "Nathan Aschbacher", "email": "nathan@coradine.com" }
+    ],
+    "license": "MIT",
+    "main": "index.js",
+    "scripts": {
+        "test": "./node_modules/.bin/mocha"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/Coradine/chinood.git"
+    },
+    "dependencies": {
+        "trustfund": ">=0.2.0",
+        "async": ">=0.1.22",
+        "nodiak": ">=0.0.8"
+    },
+    "devDependencies": {
+        "mocha": "*",
+        "should": "*"
+    },
+    "keywords": [
+        "ODM",
+        "ORM",
+        "object",
+        "data",
+        "mapper",
+        "riak",
+        "nodiak",
+        "chinood"
+    ],
+    "engines": {
+        "node": ">=0.8.x"
+    }
+}
