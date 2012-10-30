@@ -31,6 +31,7 @@ var Chinood = function Chinood(models, client) {
     this.models[Chinood.BaseModel.name] = Chinood.BaseModel;
 };
 
+Chinood.inherits = require('trustfund').inherits;
 Chinood.BaseModel = require('./lib/base_model.js');
 
 Chinood.init = function(models_root, client) {

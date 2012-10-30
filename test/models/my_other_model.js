@@ -22,7 +22,6 @@
 // TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var inherits = require('trustfund').inherits;
 var chinood = require('../../index.js');
 
 var MyOtherModel = function MyOtherModel(key, init_with, check_constraints) {
@@ -33,6 +32,6 @@ var MyOtherModel = function MyOtherModel(key, init_with, check_constraints) {
     this.attr('other_thing', Object);
 
     MyOtherModel.super_.apply(this, arguments);
-}; inherits(MyOtherModel, chinood.BaseModel);
+}; chinood.inherits(MyOtherModel, chinood.BaseModel);
 
 module.exports = MyOtherModel;
