@@ -1,6 +1,6 @@
 {
     "name": "chinood",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Object Data Mapper for Riak built on nodiak (https://npmjs.org/package/nodiak).",
     "author": "Nathan Aschbacher <nathan@coradine.com>",
     "contributors": [ 

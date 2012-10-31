@@ -52,13 +52,16 @@ Chinood.init = function(models_root, client) {
 };
 
 Chinood.modelEncoder = function(data) {
-    function modelToKey(prop, value) {
-        if(value && prop !== '' && ((value).constructor == Chinood.BaseModel || (value).constructor.super_ == Chinood.BaseModel)) {
-            return value.key;
-        }
+    return JSON.stringify(data, Chinood.modelToKey);
+};
+
+Chinood.modelToKey = function(prop, value) {
+    if(value && prop !== '' && ((value).constructor == Chinood.BaseModel || (value).constructor.super_ == Chinood.BaseModel)) {
+        return value.key;
+    }
+    else {
         return value;
     }
-    return JSON.stringify(data, modelToKey);
 };
 
 Chinood.prototype.registerModel = function(model) {

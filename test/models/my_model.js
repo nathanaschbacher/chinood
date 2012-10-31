@@ -29,7 +29,7 @@ var MyModel = function MyModel(key, init_with, check_constraints) {
     
     this.defineAttribute('my_array', Array);
     this.defineAttribute('my_other_model', MyOtherModel);
-    this.defineAttribute('my_other_mod_arr', MyOtherModel);
+    this.defineAttribute('my_other_mod_arr', [MyOtherModel]);
 
     MyModel.super_.apply(this, arguments);
 }; chinood.inherits(MyModel, chinood.BaseModel);
