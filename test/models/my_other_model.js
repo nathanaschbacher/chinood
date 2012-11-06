@@ -25,18 +25,16 @@
 var chinood = require('../../index.js');
 var MyModel = require('./my_model.js');
 
-var MyOtherModel = function MyOtherModel(key, init_with, check_constraints) {
+var MyOtherModel = chinood.defineModel('Authentication', {
 
-    this.attr('other_number', { is: Number, default: 5, index: true }); // automatically add value to secondary index.
-    this.attr('other_string', { default: "Hello There!"});
-    this.attr('other_array', { is: Array, of: Number }); // 'of' is a no-op, it's just for readability, there's no constraint enforced.
-    this.attr('other_thing', { is: Object, of: MyModel });
-    this.attr('other_function', { is: Function, default: get_other }); // this is a computed attribute, these values do not persist to Riak.
-    this.attr('other_date', { is: Date, default: new Date(), index: true });
+    other_number: { is: Number, default: 5, index: true },
+    other_string: { default: "Hello There!"},
+    other_array: { is: Array, of: Number }, // 'of' is a no-op hint, it's just for readability, there's no constraint enforced.
+    other_thing: { is: MyModel },
+    other_function: { is: Function, default: get_other }, // this is a computed attribute, these values do not persist to Riak.
+    other_date: { is: Date, default: new Date(), index: true }
 
-    MyOtherModel.super_.apply(this, arguments);
-}; chinood.inherits(MyOtherModel, chinood.BaseModel);
-
+});
 
 function get_other(_this) {
     var temp = '';
@@ -47,5 +45,3 @@ function get_other(_this) {
 }
 
 module.exports = MyOtherModel;
-
-

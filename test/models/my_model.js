@@ -25,13 +25,12 @@
 var chinood = require('../../index.js');
 var MyOtherModel = require('./my_other_model.js');
 
-var MyModel = function MyModel(key, init_with, check_constraints) {
+var MyModel = chinood.defineModel('MyModel', {
     
-    this.defineAttribute('my_array', Array);
-    this.defineAttribute('my_other_model', MyOtherModel);
-    this.defineAttribute('my_other_mod_arr', [MyOtherModel]);
+    my_array: { is: Array },
+    my_other_model: { is: MyOtherModel },
+    my_other_mod_arr: { is: Array, of: MyOtherModel }
 
-    MyModel.super_.apply(this, arguments);
-}; chinood.inherits(MyModel, chinood.BaseModel);
+});
 
 module.exports = MyModel;
