@@ -23,25 +23,14 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 var chinood = require('../../index.js');
-var MyModel = require('./my_model.js');
+var Level1 = require('./level1.js');
 
-var MyOtherModel = chinood.defineModel('MyOtherModel', {
-
-    other_number: { is: Number, default: 5, index: true },
-    other_string: { default: "Hello There!"},
-    other_array: { is: Array, of: Number }, // 'of' is a no-op hint, it's just for readability, there's no constraint enforced.
-    other_thing: { is: MyModel },
-    other_function: { is: Function, default: get_other }, // this is a computed attribute, these values do not persist to Riak.
-    other_date: { is: Date, default: new Date(), index: true }
+var Top = chinood.defineModel('Top', {
+    
+    foo: { is: String, default: 'bar' },
+    level1_1: { is: Level1 },
+    level1_arr: { is: Array, of: Level1 }
 
 });
 
-function get_other(_this) {
-    var temp = '';
-    for(var i = 0, times = _this.other_number; i < times; i++) {
-        temp += " " + _this.other_string + "\n\n";
-    }
-    return temp;
-}
-
-module.exports = MyOtherModel;
+module.exports = Top;
