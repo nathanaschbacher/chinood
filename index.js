@@ -58,52 +58,9 @@ Chinood.defineModel = function defineModel(name, attributes) {
     NewModel.prototype.type = name;
     NewModel.prototype.attrs = attributes;
     for(var i in NewModel.prototype.attrs) {
-        Chinood.defineAttribute(NewModel, i, NewModel.prototype.attrs[i]);
+        Chinood.BaseModel.defineAttribute(NewModel, i, NewModel.prototype.attrs[i]);
     }
     return NewModel;
-};
-
-Chinood.defineAttribute = function(model, attr_name, spec) {
-    if(model.prototype.data === undefined) { model.prototype.data = {}; }
-
-    if(spec && spec.hasOwnProperty('default')) {
-        model.prototype.data[attr_name] = spec.default;
-    }
-    else if(spec && spec.is == Array) {
-        model.prototype.data[attr_name] = [];
-    }
-    else if(spec && spec.is == Object && spec.is.name == Object.name) {
-        model.prototype.data[attr_name] = {};
-    }
-
-    model.prototype.__defineGetter__(attr_name, function() {
-        if(this.attrs[attr_name].is && this.attrs[attr_name].is.name === Function.name) {
-            return this.data[attr_name](this);
-        }
-        else {
-            if(this.attrs[attr_name].is.name === Date.name && this.data[attr_name].constructor == String) {
-                return new Date(this.data[attr_name]);
-            }
-            else {
-                return this.data[attr_name];
-            }
-        }
-    });
-
-    model.prototype.__defineSetter__(attr_name, function(value) {
-        if((value).constructor == this.attrs[attr_name].is || this.attrs[attr_name].is === undefined) {
-            this.data[attr_name] = value;
-
-            if(this.attrs[attr_name].index) {
-                this.clearIndex(attr_name);
-                this.addToIndex(attr_name, value);
-            }
-            this.hasChanged = true;
-        }
-        else {
-            throw new TypeError(this.type + " cannot set attribute '" + attr_name + "' to type " + (value).constructor.name + ", expected " + this.attrs[attr_name].is.name);
-        }
-    });
 };
 
 Chinood.modelEncoder = function(data) {
