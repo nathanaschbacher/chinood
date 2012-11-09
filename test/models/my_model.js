@@ -27,7 +27,7 @@ var MyOtherModel = require('./my_other_model.js');
 
 var MyModel = chinood.defineModel('MyModel', {
     
-    my_array: { is: Array },
+    my_array: { is: Array, default: [1,2,3] },
     my_other_model: { is: MyOtherModel },
     my_other_mod_arr: { is: Array, of: MyOtherModel }
 
