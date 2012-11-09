@@ -91,22 +91,20 @@ Chinood.defineAttribute = function(model, attr_name) {
     }
 
     model.prototype.__defineGetter__(attr_name, function() {
+        if(this.data[attr_name] instanceof Object) {
+            this.hasChanged = true; // this has to be set here instead of on the setter, because by-reference ops will never trigger the setter.
+        }
+
         if(this.attrs[attr_name].is && this.attrs[attr_name].is.name === Function.name) {
             return this.data[attr_name](this);
         }
         else {
-            if(this.attrs[attr_name] && this.attrs[attr_name].is == Array) {
-                if(this.data[attr_name] === undefined) {
-                    this.data[attr_name] = [];
-                }
-                this.hasChanged = true; //this has to be set on the getter because the setters don't fire on .push(), etc.
+            if(this.attrs[attr_name] && this.attrs[attr_name].is == Array && this.data[attr_name] === undefined) {
+                this.data[attr_name] = [];
                 return this.data[attr_name];
             }
-            else if(this.attrs[attr_name] && this.attrs[attr_name].is == Object && this.attrs[attr_name].is.name == Object.name) {
-                if(this.data[attr_name] === undefined) {
-                    this.data[attr_name] = {};
-                }
-                this.hasChanged = true; //this has to be set on the getter because the setters don't fire on object accessors.
+            else if(this.attrs[attr_name] && this.attrs[attr_name].is == Object && this.attrs[attr_name].is.name == Object.name && this.data[attr_name] === undefined) {
+                this.data[attr_name] = {};
                 return this.data[attr_name];
             }
             if(this.attrs[attr_name].is && this.attrs[attr_name].is.name === Date.name && this.data[attr_name].constructor == String) {
