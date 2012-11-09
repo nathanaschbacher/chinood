@@ -53,18 +53,22 @@ Chinood.defineModel = function defineModel(name, attributes) {
     var NewModel = function() {
         Chinood.BaseModel.apply(this, arguments);
 
-        for(var attr_name in this.attr_defaults) {
-            if(this.data[attr_name] === undefined) {
-                if(this.attrs[attr_name].is && this.attrs[attr_name].is == Date && this.attr_defaults[attr_name].constructor == String) {
-                    if(this.data[attr_name] === 'now') {
-                        return new Date();
+        if(this.attr_defaults) {
+            this.hasChanged = true;
+        
+            for(var attr_name in this.attr_defaults) {
+                if(this.data[attr_name] === undefined) {
+                    if(this.attrs[attr_name].is && this.attrs[attr_name].is == Date && this.attr_defaults[attr_name].constructor == String) {
+                        if(this.data[attr_name] === 'now') {
+                            this.data[attr_name] = new Date();
+                        }
+                        else {
+                            this.data[attr_name] = new Date(this.data[attr_name]);
+                        }
                     }
                     else {
-                        return new Date(this.data[attr_name]);
+                        this.data[attr_name] = this.attr_defaults[attr_name];
                     }
-                }
-                else {
-                    this.data[attr_name] = this.attr_defaults[attr_name];
                 }
             }
         }
