@@ -51,6 +51,8 @@ Chinood.init = function(models_root, client) {
 
 Chinood.defineModel = function defineModel(name, attributes) {
     var NewModel = function() {
+        Chinood.BaseModel.apply(this, arguments);
+
         for(var attr_name in this.attr_defaults) {
             if(this.data[attr_name] === undefined) {
                 if(this.attrs[attr_name].is && this.attrs[attr_name].is == Date && this.attr_defaults[attr_name].constructor == String) {
@@ -66,7 +68,6 @@ Chinood.defineModel = function defineModel(name, attributes) {
                 }
             }
         }
-        Chinood.BaseModel.apply(this, arguments);
     }; inherits(NewModel, Chinood.BaseModel);
 
     NewModel.type = name;
@@ -91,10 +92,12 @@ Chinood.defineAttribute = function(model, attr_name) {
         }
         else {
             if(this.attrs[attr_name] && this.attrs[attr_name].is == Array && this.data[attr_name] === undefined) {
-                return [];
+                this.data[attr_name] = [];
+                return this.data[attr_name];
             }
             else if(this.attrs[attr_name] && this.attrs[attr_name].is == Object && this.attrs[attr_name].is.name == Object.name && this.data[attr_name] === undefined) {
-                return {};
+                this.data[attr_name] = {};
+                return this.data[attr_name];
             }
             if(this.attrs[attr_name].is && this.attrs[attr_name].is.name === Date.name && this.data[attr_name].constructor == String) {
                 return new Date(this.data[attr_name]);
