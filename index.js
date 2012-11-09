@@ -95,12 +95,18 @@ Chinood.defineAttribute = function(model, attr_name) {
             return this.data[attr_name](this);
         }
         else {
-            if(this.attrs[attr_name] && this.attrs[attr_name].is == Array && this.data[attr_name] === undefined) {
-                this.data[attr_name] = [];
+            if(this.attrs[attr_name] && this.attrs[attr_name].is == Array) {
+                if(this.data[attr_name] === undefined) {
+                    this.data[attr_name] = [];
+                }
+                this.hasChanged = true; //this has to be set on the getter because the setters don't fire on .push(), etc.
                 return this.data[attr_name];
             }
-            else if(this.attrs[attr_name] && this.attrs[attr_name].is == Object && this.attrs[attr_name].is.name == Object.name && this.data[attr_name] === undefined) {
-                this.data[attr_name] = {};
+            else if(this.attrs[attr_name] && this.attrs[attr_name].is == Object && this.attrs[attr_name].is.name == Object.name) {
+                if(this.data[attr_name] === undefined) {
+                    this.data[attr_name] = {};
+                }
+                this.hasChanged = true; //this has to be set on the getter because the setters don't fire on object accessors.
                 return this.data[attr_name];
             }
             if(this.attrs[attr_name].is && this.attrs[attr_name].is.name === Date.name && this.data[attr_name].constructor == String) {
