@@ -51,6 +51,21 @@ Chinood.init = function(models_root, client) {
 
 Chinood.defineModel = function defineModel(name, attributes) {
     var NewModel = function() {
+        for(var attr_name in this.attr_defaults) {
+            if(this.data[attr_name] === undefined) {
+                if(this.attrs[attr_name].is && this.attrs[attr_name].is == Date && this.attr_defaults[attr_name].constructor == String) {
+                    if(this.data[attr_name] === 'now') {
+                        return new Date();
+                    }
+                    else {
+                        return new Date(this.data[attr_name]);
+                    }
+                }
+                else {
+                    this.data[attr_name] = this.attr_defaults[attr_name];
+                }
+            }
+        }
         Chinood.BaseModel.apply(this, arguments);
     }; inherits(NewModel, Chinood.BaseModel);
 
@@ -58,9 +73,55 @@ Chinood.defineModel = function defineModel(name, attributes) {
     NewModel.prototype.type = name;
     NewModel.prototype.attrs = attributes;
     for(var i in NewModel.prototype.attrs) {
-        Chinood.BaseModel.defineAttribute(NewModel, i, NewModel.prototype.attrs[i]);
+        Chinood.defineAttribute(NewModel, i);
     }
     return NewModel;
+};
+
+Chinood.defineAttribute = function(model, attr_name) {
+    // cache defaults for use on instantiation.
+    if(model.prototype.attrs[attr_name] && model.prototype.attrs[attr_name].hasOwnProperty('default')) {
+        model.prototype.attr_defaults = model.prototype.attr_defaults || {};
+        model.prototype.attr_defaults[attr_name] = model.prototype.attrs[attr_name].default;
+    }
+
+    model.prototype.__defineGetter__(attr_name, function() {
+        if(this.attrs[attr_name].is && this.attrs[attr_name].is.name === Function.name) {
+            return this.data[attr_name](this);
+        }
+        else {
+            if(this.attrs[attr_name] && this.attrs[attr_name].is == Array && this.data[attr_name] === undefined) {
+                return [];
+            }
+            else if(this.attrs[attr_name] && this.attrs[attr_name].is == Object && this.attrs[attr_name].is.name == Object.name && this.data[attr_name] === undefined) {
+                return {};
+            }
+            if(this.attrs[attr_name].is && this.attrs[attr_name].is.name === Date.name && this.data[attr_name].constructor == String) {
+                return new Date(this.data[attr_name]);
+            }
+            else {
+                return this.data[attr_name];
+            }
+        }
+    });
+
+    model.prototype.__defineSetter__(attr_name, function(value) {
+        if((value).constructor == this.attrs[attr_name].is || this.attrs[attr_name].is === undefined) {
+            this.data[attr_name] = value;
+
+            if(this.attrs[attr_name].index) {
+                this.clearIndex(attr_name);
+                this.addToIndex(attr_name, value);
+            }
+            this.hasChanged = true;
+            return this;
+        }
+        else {
+            throw new TypeError(this.type + " cannot set attribute '" + attr_name + "' to type " + (value).constructor.name + ", expected " + this.attrs[attr_name].is.name);
+        }
+    });
+
+    return model;
 };
 
 Chinood.modelEncoder = function(data) {
