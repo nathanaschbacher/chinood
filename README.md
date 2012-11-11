@@ -1,3 +1,6 @@
+## This is under heavy development, API changes are abound
+Feel free to play around with it, but be aware that until you see documentation here, a test suite, and a 0.1.0 version you're in for a wild ride.
+
 ## Overview
 
 Chinood is an object data mapper for Riak built on the nodiak Riak client.
