@@ -90,6 +90,15 @@ Chinood.defineAttribute = function(model, attr_name) {
         model.prototype.attr_defaults[attr_name] = model.prototype.attrs[attr_name].default;
     }
 
+    // check spec for string name of current model (indicating a self-type reference) and replace with model.
+    if(model.prototype.attrs[attr_name].is === model.type) {
+        model.prototype.attrs[attr_name].is = model;
+    }
+    else if(model.prototype.attrs[attr_name].of === model.type) {
+        model.prototype.attrs[attr_name].of = model;
+    }
+
+    // define getters and setters for attribute
     model.prototype.__defineGetter__(attr_name, function() {
         if(this.data[attr_name] instanceof Object) {
             this.hasChanged = true; // this has to be set here instead of on the setter, because by-reference ops will never trigger the setter.
@@ -117,7 +126,8 @@ Chinood.defineAttribute = function(model, attr_name) {
     });
 
     model.prototype.__defineSetter__(attr_name, function(value) {
-        if((value).constructor == this.attrs[attr_name].is || this.attrs[attr_name].is === undefined) {
+        // if undefined, null, the model spec has no 'is' specified, or matching the 'is' type on the model spec...
+        if(value === undefined || value === null || this.attrs[attr_name].is === undefined || (value).constructor == this.attrs[attr_name].is || (this.attrs[attr_name].is.super_ == Chinood.BaseModel && value.type == this.attrs[attr_name].is.type)) {
             this.data[attr_name] = value;
 
             if(this.attrs[attr_name].index) {
@@ -127,8 +137,10 @@ Chinood.defineAttribute = function(model, attr_name) {
             this.hasChanged = true;
             return this;
         }
-        else {
-            throw new TypeError(this.type + " cannot set attribute '" + attr_name + "' to type " + (value).constructor.name + ", expected " + this.attrs[attr_name].is.name);
+        else { // ...else complain about it.
+            var actual = value.type || (value).constructor.name;
+            var expected = this.attrs[attr_name].is.type || this.attrs[attr_name].is.name;
+            throw new TypeError(this.type + " cannot set attribute '" + attr_name + "' to type " + actual + ", expected " + expected);
         }
     });
 
