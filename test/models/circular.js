@@ -22,25 +22,14 @@
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 var chinood = require('../../index.js');
-var MyModel = require('./my_model.js');
 
-var MyOtherModel = chinood.defineModel('MyOtherModel', {
+var Circular = chinood.defineModel('Circular', {
 
-    other_number: { is: Number, default: 5, index: true },
-    other_string: { default: "Hello There!"},
-    other_array: { is: Array, of: Number }, // 'of' is a no-op hint, it's just for readability, there's no constraint enforced.
-    other_thing: { is: MyModel },
-    other_function: { is: Function, default: get_other }, // this is a computed attribute, these values do not persist to Riak.
-    other_date: { is: Date, default: new Date(), index: true }
-
+    next: { is: 'Circular' }, // For models to contain instances of themselves you use the string name, it gets replaced with its constructor at runtime.
+    prev: { is: 'Circular' },
+    bunch: { is: Array, of: 'Circular' },
+    value: { is: String, default: "'round and 'round we go." },
+    timestamp: { is: Date, default: 'now' }
 });
 
-function get_other(_this) {
-    var temp = '';
-    for(var i = 0, times = _this.other_number; i < times; i++) {
-        temp += " " + _this.other_string + "\n\n";
-    }
-    return temp;
-}
-
-module.exports = MyOtherModel;
+module.exports = Circular;

@@ -21,26 +21,15 @@
 // TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 // SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-var chinood = require('../../index.js');
-var MyModel = require('./my_model.js');
+describe("Chinood Object Data Mapper Test Suite", function() {
+    var should = require('should');
+    var inherits = require('../index.js').inherits;
 
-var MyOtherModel = chinood.defineModel('MyOtherModel', {
+    before(function(done){
+        done();
+    });
 
-    other_number: { is: Number, default: 5, index: true },
-    other_string: { default: "Hello There!"},
-    other_array: { is: Array, of: Number }, // 'of' is a no-op hint, it's just for readability, there's no constraint enforced.
-    other_thing: { is: MyModel },
-    other_function: { is: Function, default: get_other }, // this is a computed attribute, these values do not persist to Riak.
-    other_date: { is: Date, default: new Date(), index: true }
-
+    it("should do nothing because there are no tests yet.", function(done) {
+        done();
+    });
 });
-
-function get_other(_this) {
-    var temp = '';
-    for(var i = 0, times = _this.other_number; i < times; i++) {
-        temp += " " + _this.other_string + "\n\n";
-    }
-    return temp;
-}
-
-module.exports = MyOtherModel;

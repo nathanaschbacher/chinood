@@ -1,6 +1,5 @@
 // (The MIT License)
 
-// Copyright (c) 2012 Coradine Aviation Systems
 // Copyright (c) 2012 Nathan Aschbacher
 
 // Permission is hereby granted, free of charge, to any person obtaining
@@ -24,6 +23,7 @@
 
 var chinood = require('../../index.js');
 var MyOtherModel = require('./my_other_model.js');
+var Level1 = require('./level1.js');
 
 var MyModel = chinood.defineModel('MyModel', {
     
@@ -32,5 +32,11 @@ var MyModel = chinood.defineModel('MyModel', {
     my_other_mod_arr: { is: Array, of: MyOtherModel }
 
 });
+
+var temp = new MyModel("hi");
+var mom = new MyOtherModel('mom');
+var lvl1 = new Level1('lvl1');
+
+temp.my_other_model = mom;
 
 module.exports = MyModel;
