@@ -1,3 +1,5 @@
+
+
 var top_level = new chinood.models.Top('top_key');
 
 var level1_1 = new chinood.models.Level1('level1_1_key');
@@ -24,8 +26,10 @@ var twelve = new chinood.models.Top('12');
 one.foo = "true";
 twelve.foo = "false";
 
-one.save(function(){});
-twelve.save(function(){});
+console.log(one instanceof BaseModel);
+
+// one.save(function(){});
+// twelve.save(function(){});
 
 // var temp = new chinood.models.MyModel('frank');
 // console.log(temp.my_other_mod_arr);

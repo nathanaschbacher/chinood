@@ -1,6 +1,5 @@
 // (The MIT License)
 
-// Copyright (c) 2012 Coradine Aviation Systems
 // Copyright (c) 2012 Nathan Aschbacher
 
 // Permission is hereby granted, free of charge, to any person obtaining
@@ -59,7 +58,7 @@ Chinood.defineModel = function defineModel(name, attributes) {
             for(var attr_name in this.attr_defaults) {
                 if(this.data[attr_name] === undefined) {
                     if(this.attrs[attr_name].is && this.attrs[attr_name].is == Date && this.attr_defaults[attr_name].constructor == String) {
-                        if(this.data[attr_name] === 'now') {
+                        if(this.attr_defaults[attr_name] === 'now') {
                             this.data[attr_name] = new Date();
                         }
                         else {
@@ -100,6 +99,7 @@ Chinood.defineAttribute = function(model, attr_name) {
 
     // define getters and setters for attribute
     model.prototype.__defineGetter__(attr_name, function() {
+        console.log("getter for: "+attr_name);
         if(this.data[attr_name] instanceof Object) {
             this.hasChanged = true; // this has to be set here instead of on the setter, because by-reference ops will never trigger the setter.
         }

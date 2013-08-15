@@ -1,6 +1,5 @@
 // (The MIT License)
 
-// Copyright (c) 2012 Coradine Aviation Systems
 // Copyright (c) 2012 Nathan Aschbacher
 
 // Permission is hereby granted, free of charge, to any person obtaining
@@ -26,10 +25,11 @@ var chinood = require('../../index.js');
 
 var Circular = chinood.defineModel('Circular', {
 
-    next: { is: 'Circular' }, // For self-references you use the string name, it gets replaced with its constructor at runtime.
+    next: { is: 'Circular' }, // For models to contain instances of themselves you use the string name, it gets replaced with its constructor at runtime.
     prev: { is: 'Circular' },
     bunch: { is: Array, of: 'Circular' },
-    value: { is: String, default: "'round and 'round we go." }
+    value: { is: String, default: "'round and 'round we go." },
+    timestamp: { is: Date, default: 'now' }
 });
 
 module.exports = Circular;

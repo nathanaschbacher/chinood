@@ -11,8 +11,6 @@ Chinood is an object data mapper for Riak built on the nodiak Riak client.
 
 (The MIT License)
 
-Copyright (c) 2012 Coradine Aviation Systems
-
 Copyright (c) 2012 Nathan Aschbacher
 
 Permission is hereby granted, free of charge, to any person obtaining

@@ -1,16 +1,48 @@
 var inspect = require('util').inspect;
-var nodiak = require('nodiak').getClient('http', 'localhost', 8091);
+var async = require('async');
+var nodiak = require('nodiak').getClient('http', 'localhost', 10018);
 var chinood = require('../index.js').init(__dirname+'/../test/models/', nodiak);
 var Models = chinood.models;
 
 var c1 = new Models.Circular('c1');
 
 var circ1 = new Models.Circular('circ1');
-console.log(circ1.constructor.super_);
-// var circ2 = new Models.Circular('circ2');
+var circ2 = new Models.Circular('circ2');
 
-// circ1.next = circ2;
+var obj = {one: 1, two: 2, three: 3, four: 4};
+
+async.each(Object.keys(obj),
+	function(key, iterate) {
+		console.log(obj[key]);
+	},
+	function(err) {
+		console.log("done");
+	}
+);
+
+// circ1.next = circ1;
 // circ2.next = circ1;
+// circ1.prev = circ2;
+// circ2.bunch.push(circ1, circ2);
+
+//var temp = Models.BaseModel.get_working_set(circ1, 0, [], {});
+//console.log(temp);
+
+//console.log(circ1.next.next.next.next.next.next);
+// circ1.fetch(0, function(err, result) {
+// 	console.log(err);
+// 	console.log("Completed");
+
+// 	// circ1.delete(1, function(err, result) {
+// 	// 	console.log(err);
+// 	// 	console.log("Completed");
+// 	// });
+// });
+
+// circ1.delete(1, function(err, result) {
+// 	console.log(err);
+// 	console.log("Completed");
+// });
 
 // circ1.fetch(Infinity, function(err, result) {
 //     console.log(circ1);
